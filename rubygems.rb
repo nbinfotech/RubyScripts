@@ -44,7 +44,8 @@ while letter != 'AA'
 	no_of_pages_to_crawl = doc.css('div.pagination a').children[-2].text.to_i
 
 	while page <= no_of_pages_to_crawl
-	  progress = 'Progress '
+		puts "\n[*] Crawling page right now : #{page} , Remaining : #{no_of_pages_to_crawl-page}"
+    	progress = ''
 	    1000.times do |i|
 	     
 	    # i is number from 0-999
@@ -66,7 +67,6 @@ while letter != 'AA'
 	    end
 
 
-	  puts "\n[*] Crawling page right now : #{page} , Remaining : #{no_of_pages_to_crawl-page}"
 	  counter = 0
 	  doc = Nokogiri::HTML(open("https://rubygems.org/gems?letter=#{letter}&page=#{page}"))
 	  
@@ -81,9 +81,16 @@ while letter != 'AA'
 
 		  while counter <= @gem_counter
 
-		    file = File.open("GemList", "a")
-		    puts "#{$TOTAL} ) #{ @gem_only[counter]} == #{@gem_desc[counter]}\n"
-		    file.write("#{$TOTAL} ) #{ @gem_only[counter]} == #{@gem_desc[counter]}\n")
+		    File.open("GemList", "a") do |file|
+		  	begin
+			    puts "#{$TOTAL} ) #{ @gem_only[counter]} == #{@gem_desc[counter]}\n"
+			    file.write("#{$TOTAL} ) #{ @gem_only[counter]} == #{@gem_desc[counter]}\n")
+
+			rescue
+				raise FileSaveError.new($!)
+
+			end
+			end
 
 		    counter += 1
 		    $TOTAL += 1
