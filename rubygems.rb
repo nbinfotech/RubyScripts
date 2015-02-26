@@ -44,7 +44,7 @@ while letter != 'AA'
 	no_of_pages_to_crawl = doc.css('div.pagination a').children[-2].text.to_i
 
 	while page <= no_of_pages_to_crawl
-	  puts "[*] Crawling page right now : #{page} , Remaining : #{no_of_pages_to_crawl}"
+	  puts "[*] Crawling page right now : #{page} , Remaining : #{no_of_pages_to_crawl-page}"
 	  counter = 0
 	  doc = Nokogiri::HTML(open("https://rubygems.org/gems?letter=#{letter}&page=#{page}"))
 	  
