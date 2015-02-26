@@ -87,7 +87,7 @@ while letter != 'AA'
 			    file.write("#{$TOTAL} ) #{ @gem_only[counter]} == #{@gem_desc[counter]}\n")
 
 			rescue
-				raise FileSaveError.new($!)
+				puts "[!] File Save Error!"
 
 			end
 			end
