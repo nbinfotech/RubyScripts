@@ -51,7 +51,7 @@ while letter != 'AA'
 	    j = i + 1
 	     
 	      # add 1 percent every 20 times
-	      if j % 20 == 0
+	      if j % 10 == 0
 	        progress << "="
 	        # move the cursor to the beginning of the line with \r
 	        print "\r"
@@ -64,6 +64,8 @@ while letter != 'AA'
 	        sleep 0.07
 	      end
 	    end
+
+
 	  puts "\n[*] Crawling page right now : #{page} , Remaining : #{no_of_pages_to_crawl-page}"
 	  counter = 0
 	  doc = Nokogiri::HTML(open("https://rubygems.org/gems?letter=#{letter}&page=#{page}"))
