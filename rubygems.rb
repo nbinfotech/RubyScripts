@@ -13,17 +13,11 @@ if File.exist?("GemList")
   File.delete("GemList")
 end
 
-page = 1
+# Global and instance variables
+$TOTAL = 1						
 @gem_only = Array.new
-counter = 0
-doc = Nokogiri::HTML(open('https://rubygems.org/gems?letter=A?page=1'))
-	
-# Extract the h2 headers
-gem_name = doc.xpath('//h2[@class="gems__gem__name"]').text.split.to_a
-
-# Get the number of pages to crawl
-no_of_pages_to_crawl = doc.css('div.pagination a').children[-2].text.to_i
-puts "[*] Crawling page right now : #{page} , Remaining : #{no_of_pages_to_crawl}"
+letter = 'A'
+page = 1
 
 
 def gem_filter(gem_list)
@@ -35,29 +29,51 @@ def gem_filter(gem_list)
 
 end
 
-gem_filter(gem_name)
-
-# Excrat description list array
-gem_desc = doc.xpath('//p[@class="gems__gem__desc t-text"]').children.to_a
-
-# Get the total number of description list to later use in the array index
-gem_counter = gem_desc.count
 
 
+while letter != 'AA'
+	
+	doc = Nokogiri::HTML(open("https://rubygems.org/gems?letter=#{letter}&@page=#{page}"))
+	no_of_pages_to_crawl = doc.css('div.pagination a').children[-2].text.to_i
 
-# File Handling
+	while page <= no_of_pages_to_crawl
+	  puts "[*] Crawling page right now : #{page} , Remaining : #{no_of_pages_to_crawl}"
+	  counter = 0
+	  doc = Nokogiri::HTML(open("https://rubygems.org/gems?letter=#{letter}&page=#{page}"))
+	  
+	  # Extract the h2 headers
+	  @gem_name = doc.xpath('//h2[@class="gems__gem__name"]').text.split.to_a
+	  # Excrat description list array
+	  @gem_desc = doc.xpath('//p[@class="gems__gem__desc t-text"]').children.to_a
+	  # Get the total number of description list to later use in the array index
+	  @gem_counter = @gem_desc.count
 
-while counter < gem_counter
+	  gem_filter(@gem_name)
 
-  file = File.open("GemList", "a")
-  puts "#{counter+1} ) #{ @gem_only[counter]} == #{gem_desc[counter]}\n"
-  file.write("#{counter+1} ) #{ @gem_only[counter]} == #{gem_desc[counter]}\n")
+		  while counter <= @gem_counter
 
-  counter += 1
+		    file = File.open("GemList", "a")
+		    puts "#{$TOTAL} ) #{ @gem_only[counter]} == #{@gem_desc[counter]}\n"
+		    file.write("#{$TOTAL} ) #{ @gem_only[counter]} == #{@gem_desc[counter]}\n")
+
+		    counter += 1
+		    $TOTAL += 1
+		  end
+
+	  page += 1
+	  @gem_only = []
+	end
+	
+	letter = letter.next
+	page = 1
+	
 end
+letter.next
 
+
+# Close if any open connection
 file.close
 
 
 # Success message!
-puts "[*] Yay!Written to file. Nothing to do "
+puts "[*] Yay!Written to file. Nothing to do! Cheers @Amar :) "
