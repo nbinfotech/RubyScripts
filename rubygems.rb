@@ -44,7 +44,27 @@ while letter != 'AA'
 	no_of_pages_to_crawl = doc.css('div.pagination a').children[-2].text.to_i
 
 	while page <= no_of_pages_to_crawl
-	  puts "[*] Crawling page right now : #{page} , Remaining : #{no_of_pages_to_crawl-page}"
+	  progress = 'Progress '
+	    1000.times do |i|
+	     
+	    # i is number from 0-999
+	    j = i + 1
+	     
+	      # add 1 percent every 20 times
+	      if j % 20 == 0
+	        progress << "="
+	        # move the cursor to the beginning of the line with \r
+	        print "\r"
+	        # puts add \n to the end of string, use print instead
+	        print progress + " #{j / 10} %"
+	     
+	        # force the output to appear immediately when using print
+	        # by default when \n is printed to the standard output, the buffer is flushed.
+	        $stdout.flush
+	        sleep 0.07
+	      end
+	    end
+	  puts "\n[*] Crawling page right now : #{page} , Remaining : #{no_of_pages_to_crawl-page}"
 	  counter = 0
 	  doc = Nokogiri::HTML(open("https://rubygems.org/gems?letter=#{letter}&page=#{page}"))
 	  
