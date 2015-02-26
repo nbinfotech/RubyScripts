@@ -1,14 +1,21 @@
 #########################################################################
-# Author :  nbinfotech (p).ltd					        #
-# Script : rubygems.rb							#
-# Date : 1502270014							#
+# Author  : nbinfotech (p).ltd						#
+# Website : http://www.nbinfotech.com					#
+# Email   : info@nbinfotech.com.np					#
+# Script  : rubygems.rb							#
+# About   : 								#
+#	    rubygems.rb to crawl over http://rubygems.org and extract	#
+#	    gem names along with its description. It is expected to work#
+#	    as long as the page configuration is intact.		#
+# 									#
+# Date    : 1502270014							#
 #########################################################################
 #!/usr/bin/ruby
 
 require 'nokogiri'
 require 'open-uri'
 
-# Remove existing file
+# Remove existing file if any
 if File.exist?("GemList")
   File.delete("GemList")
 end
@@ -76,4 +83,4 @@ file.close
 
 
 # Success message!
-puts "[*] Yay!Written to file. Nothing to do! Cheers @Amar :) "
+puts "[*] Yay! Written to file. Nothing to do! Cheers @Amar :) "
